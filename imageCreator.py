@@ -1,5 +1,8 @@
+#! python3
+
 import docx
 from docx.shared import Mm
+import sys
 
 pageWidth = 210
 pageHeight = 297
@@ -14,18 +17,21 @@ section.right_margin = Mm(marginSize)
 section.top_margin = Mm(marginSize)
 section.bottom_margin = Mm(marginSize)
 
-imageFile = input("Enter file name : ")
-
-images = []
-images.append(imageFile)
-images.append(imageFile)
-images.append(imageFile)
-
-width = ((pageWidth - (marginSize * 2)) / 2) - 10
+width = ((pageWidth - (marginSize * 2)) / 2) - 5
 height = ((pageHeight - (marginSize * 2)) / 3) - 5
 
-for image in images:
-    doc.add_picture(image,Mm(width),Mm(height))
 
+# Replace the sys.argv with a proper array when doing __name__ == __main__
+
+run = doc.add_paragraph().add_run()
+
+for i in range(1,(len(sys.argv)),2):
+    run.add_picture(sys.argv[i],Mm(width),Mm(height))
+    run.add_text("      ")    
+    if i == (len(sys.argv)-1):
+        break
+    run.add_picture(sys.argv[i+1],Mm(width),Mm(height))
+    run.add_break()
+    run.add_break()
 
 doc.save("images.docx")
